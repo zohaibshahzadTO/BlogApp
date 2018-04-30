@@ -23,3 +23,43 @@ When a user clicks on a link or maybe a button that says "create new post", the 
 # Basics of React-Router
 
 We're going to import a couple of things from react-router-dom such as the BrowserRouter. This object interacts with the History library and decides exactly what to do based on a change inside the URL. The term BrowserRouter in particular is saying I want React-Router to look at the entire URL when deciding what different components to show on the screen. The purpose of the RouteComponent is to provide the configuration that will say "hey if the URL looks like this, then I want you show this component and so on." So again, the route object or the route component is all about providing some customization or configuration to react-router.
+
+# Lodash Library
+
+Something we're trying to do is when retrieving the list of posts, the API returns it in the form of a list of objects within an array. However, what we want to do is actually format the posts in the key-value format. For example:
+
+The array of posts can look something like this:
+
+  *const posts = [
+    { id: 4, title: "Hey" },
+    { id: 25, title: "Bye" },
+    { id: 36, title: "How's it going" }
+  ];*
+
+However, we want the id of the post to be key that we call upon in which it would display its value (the content of the post), something like this:
+
+  *{
+    "4":{"id":4,"title":"Hi"},
+    "25":{"id":25,"title":"bye"},
+    "36":{"id":36,"title":"Hows it going?"}
+   }*
+
+We want the posts to be stored as a list of objects embedded within an object with that specific key value format. In order to do this, we'll use the Lodash javascript library.
+
+We'll use a special method from that library below:
+
+   *_.mapKeys(posts, "id")*
+
+As you can see, we init the lodash library using the underscore and (dot) and used the mapKey method in which we put "posts" as the array parameter we want to work with and the second parameter being "id". What this does is exactly format the list of objects in the way we want. It would end up displaying the array of posts into this list of objects where each id is the key for each post (value).
+
+Now what we can do is create a const called state and assign the mapKey method with our parameters to it:
+
+  *const state = _.mapKeys(posts, "id");*
+
+And we can call that const and input which post we want in particular:
+
+  *state["4"];*
+
+Outputting:
+
+  *"4":{"id":4,"title":"Hi"}*
