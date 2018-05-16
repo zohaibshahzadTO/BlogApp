@@ -63,3 +63,23 @@ And we can call that const and input which post we want in particular:
 Outputting:
 
   *"4":{"id":4,"title":"Hi"}*
+
+# Action Creator Shortcuts
+
+Now that we have our FETCH_POSTS action creator file and we also have our reducer hooked up to it for the FETCH_POSTS action, we need to now wire up the FETCH_POSTS action creator to the PostsIndex component. So lets import our action creator and the connect helper and get everything wired up at the top of the file.
+
+
+Right now, without using mapStateToProps we were able to wire out action creator to the component simply by using the connect helper. However, now we want to know when to call the action creator. When are we going to attempt to reach out to the API and fetch our list of posts. We've always fetched data when a particular event occurred in previous applications on this github, so whenever a user clicks or hovers on a link. However, we've never really put together a component where we said "hey, as soon as we know that this component is about to render, I want to go and attempt to fetch some data". To take care of this, we're going to make use of a react lifecycle method. A lifecycle method is a function on a react component class that is automatically called by React. The one we're going to work is called *ComponentDidMount*. This function will be automatically called by React immediately after this component has shown up inside the DOM. That makes it a perfect location to go and fetch some data or initiate some one time loading procedure if we have anything we want to do one time when the component shows up on the page. Why do we want to show data after the component has shown up on the screen? It doesnt really matter if we call the action creator before or after the component renders on the screen. The reason for that is fetching our data is an asynchronous operation. Whenever we reach out to that blog post API to fetch some data, it takes some amount of time to fetch and have it be returned to our browser and react doesnt have any concept of figuring out of how to not render the component until after we do some pre-loading operation. React is always going to eagerly load itself or render the component and wont really wait for us to load some data. Ok, so because this function is called automatically one time when the components first render, it makes it the ideal location to kick off our data loading process.
+
+
+# Creating New Posts
+
+1. Scaffold 'PostsNew' component
+2. Add route configuration
+3. Add navigation between Index and New
+4. Add form to PostsNew
+5. Make action creator to save post
+
+# A React Router Gotcha
+
+We've run into a common problem when using React Router. It seems that two components are being displayed at the same time: the component when it comes to creating a new posts and the list of posts already rendered in the index and this is happening while we're in the "/posts/new" route. This is odd because we're only supposed to be able to see the component specific to the route we're currently viewing. Our route path for the index page is "/", however since the route path for creating a new post is "/posts/new", that slash from the former is also within the latter. This is why we have two component being displayed. In order to rectify this, we need to import another component from React-Router called "Switch". The switch component takes in a collection of different routes. So in practice, we usually nest a couple of routes within a switch component. It'll look at all the routes inside of it and then decide to only render the first route that matches the current URL. So we can put our most specific URL in the top of the list.
